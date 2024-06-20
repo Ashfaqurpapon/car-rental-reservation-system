@@ -2,49 +2,85 @@ import httpStatus from 'http-status';
 import { TBooking, TReturnBooking } from './booking.interface';
 import { Booking } from './booking.model';
 import AppError from '../../errors/AppError';
+import { Car } from '../car/car_create_model';
+import mongoose from 'mongoose';
 
-const createSingleBookingIntoDB = async (payload: TBooking) => {
+const getBookingsByCarAndDate = async (carId: any, date: any) => {
+  //console.log('paps');
+
   try {
-    const newBooking = (await Booking.create(payload)).populate('user');
-    if (!newBooking) {
+    //const objectIdCarId = mongoose.Types.ObjectId(carId);
+    const bookings = await Booking.find({
+      carId: carId,
+      date: new Date(date),
+    })
+      .populate('user')
+      .populate('carId');
+    if (!bookings) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create newBooking');
     }
-    return newBooking;
+    return bookings;
   } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const createSingleBookingIntoDB = async (payload: TBooking) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const checkAlleradyBooking = await Car.findById(payload.carId);
+    if (!checkAlleradyBooking) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Sorry car is not execite');
+    }
+    if (checkAlleradyBooking?.status === 'unavailable') {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Sorry car is unavailbe');
+    }
+
+    await Car.findByIdAndUpdate(
+      payload.carId,
+      {
+        status: 'unavailable',
+      },
+      { new: true, session },
+    );
+
+    const newBooking = await Booking.create([payload], { session });
+    if (!newBooking.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create newBooking');
+    }
+    await session.commitTransaction();
+    await session.endSession();
+
+    const rslt = await Booking.findById(newBooking[0]._id)
+      .populate('user')
+      .populate('carId');
+
+    return rslt;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
     throw new Error(err);
   }
 };
 
 const getUserBookings = async (userId: string) => {
-  console.log('Limon');
-  console.log(userId);
+  //console.log('Limon');
+  //console.log(userId);
   try {
     const result = await Booking.findOne({
       user: userId,
-    }).populate('user');
+    })
+      .populate('user')
+      .populate('carId');
     if (!result) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
         `This user is not  belong to this `,
       );
     }
-    return result;
-  } catch (err: any) {
-    throw new Error(err);
-  }
-};
 
-const returnBookedCar = async (returnInfo: TReturnBooking) => {
-  try {
-    const result = await Booking.findByIdAndUpdate(returnInfo.bookingId, {
-      endTime: '15:00',
-    });
-    if (!result) {
-      throw new AppError(
-        httpStatus.BAD_REQUEST,
-        `This user is not  belong to this `,
-      );
-    }
     return result;
   } catch (err: any) {
     throw new Error(err);
@@ -52,7 +88,7 @@ const returnBookedCar = async (returnInfo: TReturnBooking) => {
 };
 
 export const BookingServices = {
+  getBookingsByCarAndDate,
   createSingleBookingIntoDB,
   getUserBookings,
-  returnBookedCar,
 };

@@ -26,8 +26,10 @@ const loginUser = async (payload: TLoginUser) => {
 
   //create token and sent to the  client
 
+  const tempId: string = user._id.toString();
+
   const jwtPayload = {
-    userId: user._id,
+    userId: tempId,
     role: user.role,
   };
 

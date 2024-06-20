@@ -6,6 +6,7 @@ import auth from '../../middlewares/auth';
 import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
+router.get('/bookings', BookingControllers.getBookingsByCarAndDate);
 
 router.post(
   '/',
@@ -13,14 +14,13 @@ router.post(
   validateRequest(createBookingValidationSchema),
   BookingControllers.createSingleBooking,
 );
-
 router.get(
-  '/my-bookings',
-  auth(USER_ROLE.user),
-  BookingControllers.getUserBookings,
+  '/',
+  auth(USER_ROLE.admin),
+  BookingControllers.getBookingsByCarAndDate,
 );
 
-router.put(
+router.get(
   '/my-bookings',
   auth(USER_ROLE.user),
   BookingControllers.getUserBookings,

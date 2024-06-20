@@ -18,21 +18,10 @@ const router = express.Router();
 
 router.post(
   '/signup',
-  validateRequest(createUserValidationSchema),
+  //validateRequest(createUserValidationSchema),
   UserControllers.createSingleUser,
 );
 
-router.post(
-  '/signin',
-  // validateRequest(createUserValidationSchema),
-  AuthControllers.loginUser,
-);
-
-// router.post(
-//   '/signin',
-//   // validateRequest(createUserValidationSchema),
-//   auth(USER_ROLE.admin),
-//   AuthControllers.loginUser,
-// );
+router.post('/signin', AuthControllers.loginUser);
 
 export const userRoutes = router;

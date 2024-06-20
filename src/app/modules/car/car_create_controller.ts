@@ -1,12 +1,12 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
-import { carCreateServices } from './car_create_service';
+
 import { Request, Response } from 'express';
+import { carCreateServices } from './car_create_service';
 
 const createCar = catchAsync(async (req: Request, res: Response) => {
   const result = await carCreateServices.createCarIntoDB(req.body);
-  //console.log(result);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -22,7 +22,7 @@ const getAllACreatedCar = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic semesters are retrieved successfully',
+    message: ' Created Car are retrieved successfully',
     data: result,
   });
 });
@@ -62,7 +62,7 @@ const updateCreatedCar = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Semester Registration is updated successfully',
+    message: 'Car is updated successfully',
     data: result,
   });
 });
@@ -80,10 +80,21 @@ const deleteSingleCreatedCar = catchAsync(
   },
 );
 
+const returnCar = catchAsync(async (req, res) => {
+  const result = await carCreateServices.returnBookedCar(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Car booked successfully',
+    data: result,
+  });
+});
+
 export const carCreateController = {
   createCar,
   getAllACreatedCar,
   getSingleCreatedCar,
   updateCreatedCar,
   deleteSingleCreatedCar,
+  returnCar,
 };

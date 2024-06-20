@@ -8,10 +8,15 @@ import config from '../config';
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
-    if (!token) {
+    const inputToken = req.headers.authorization;
+    const prefix = 'Bearer ';
+    if (!inputToken) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
+    if (!inputToken.startsWith(prefix)) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Not valid token!');
+    }
+    const token = inputToken.replace('Bearer ', '');
 
     // checking if the given token is valid
     const decoded = jwt.verify(

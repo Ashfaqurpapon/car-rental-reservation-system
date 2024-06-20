@@ -4,13 +4,16 @@ import catchAsync from '../../utils/catchAsync';
 import httpStatus from 'http-status';
 
 const createSingleUser = catchAsync(async (req, res) => {
-  const { student: studentData } = req.body;
-  const result = await UserServices.createUserIntoDB(studentData);
+  //console.log(req.body);
+
+  const result = await UserServices.createUserIntoDB(req.body);
+  //console.log(`${req.body.role}`);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User registered successfully',
+    message: `${req.body.role} has been registered successfully.`,
+
     data: result,
   });
 });

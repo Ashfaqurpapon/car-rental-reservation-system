@@ -1,10 +1,10 @@
 import { USER_ROLE } from './user.constant';
-import { Model } from 'mongoose';
+import { Document, Model, ObjectId } from 'mongoose';
 
-export interface TUser {
+export interface TUser extends Document {
   // confusion . I think, better to use mongo _id
   //   id: string;
-
+  _id: ObjectId;
   name: string;
   email: string;
   role: 'user' | 'admin';

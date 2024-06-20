@@ -2,6 +2,9 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { ICar } from './car_create_interface';
 import { Car } from './car_create_model';
+import { Booking } from '../booking/booking.model';
+import mongoose from 'mongoose';
+import { TReturnBooking } from '../booking/booking.interface';
 
 const createCarIntoDB = async (payLoad: ICar): Promise<ICar> => {
   const existingCar = await Car.findOne({ name: payLoad.name });
@@ -67,10 +70,85 @@ const deleteSingleCreatedCarFromDB = async (id: string) => {
   }
 };
 
+const returnBookedCar = async (returnInfo: TReturnBooking) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const befortrans = await Booking.findById(returnInfo.bookingId);
+    const beforeTransCar = await Car.findById(befortrans?.carId);
+
+    // TODO : need to check weather start time is before end time
+    const totalCost = calculateTotalCost(
+      befortrans?.startTime as string,
+      returnInfo.endTime,
+      beforeTransCar?.pricePerHour as number,
+    );
+
+    await Car.findByIdAndUpdate(
+      befortrans?.carId,
+      {
+        status: 'available',
+      },
+      { new: true, session },
+    );
+
+    const result = await Booking.findByIdAndUpdate(
+      returnInfo.bookingId,
+      {
+        endTime: returnInfo.endTime,
+        totalCost: totalCost,
+      },
+      { new: true, session },
+    )
+      .populate('user')
+      .populate('carId');
+
+    const newResult = await Booking.findById(returnInfo.bookingId)
+      .populate('user')
+      .populate('carId');
+
+    if (!result) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        `This user is not  belong to this `,
+      );
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newResult;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+};
+
+function calculateTotalCost(
+  startTime: string,
+  endTime: string,
+  pricePerHour: number,
+): number {
+  // Convert times to hours
+  const startHour = parseInt(startTime.split(':')[0]);
+  const endHour = parseInt(endTime.split(':')[0]);
+
+  // Calculate duration
+  const durationHours = endHour - startHour;
+
+  // Calculate total cost
+  const totalCost = durationHours * pricePerHour;
+
+  return totalCost;
+}
+
 export const carCreateServices = {
   createCarIntoDB,
   getAllCreatedCarFromDB,
   getSingleCreatedCarFromDB,
   updateSingleCreatedCarFromDB,
   deleteSingleCreatedCarFromDB,
+  returnBookedCar,
 };

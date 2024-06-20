@@ -1,16 +1,15 @@
-import { string } from 'joi';
 import mongoose from 'mongoose';
 import { Schema, Types } from 'mongoose';
 
-function parseTimeStringToDate(timeString, baseDate) {
-  const [hours, minutes] = timeString.split(':').map(Number);
-  const date = new Date(baseDate);
-  date.setHours(hours);
-  date.setMinutes(minutes);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  return date;
-}
+// function parseTimeStringToDate(timeString, baseDate) {
+//   const [hours, minutes] = timeString.split(':').map(Number);
+//   const date = new Date(baseDate);
+//   date.setHours(hours);
+//   date.setMinutes(minutes);
+//   date.setSeconds(0);
+//   date.setMilliseconds(0);
+//   return date;
+// }
 
 const bookingSchema = new Schema(
   {
@@ -31,7 +30,7 @@ const bookingSchema = new Schema(
     },
     carId: {
       type: Types.ObjectId,
-      // ref: 'Car',
+      ref: 'Car',
       // required: true,
     },
     startTime: {

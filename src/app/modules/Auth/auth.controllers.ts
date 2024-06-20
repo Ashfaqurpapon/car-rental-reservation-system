@@ -7,6 +7,8 @@ import config from '../../config';
 
 const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
+  //console.log(result);
+
   const { refreshToken, accessToken, user } = result;
 
   res.cookie('refreshToken', refreshToken, {
@@ -17,7 +19,7 @@ const loginUser = catchAsync(async (req, res) => {
   sendResponseWithToken(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User logged in successfully !',
+    message: `${result.user.role} has been registered successfully.`,
     data: user,
     token: accessToken,
   });
