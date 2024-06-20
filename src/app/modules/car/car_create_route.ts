@@ -7,7 +7,7 @@ import {
 } from './car_create_validation';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from '../user/user.constant';
-import { userRoutes } from '../user/user.route';
+
 // import validateRequest from '../../middleware/validateRequest';
 // import { createCarValidationSchema } from './car_create_validation';
 
