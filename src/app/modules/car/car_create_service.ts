@@ -16,6 +16,7 @@ const createCarIntoDB = async (payLoad: ICar): Promise<ICar> => {
   return await car.save();
 };
 const getAllCreatedCarFromDB = async () => {
+  console.log('This routes is called');
   const result = await Car.find();
   return result;
 };

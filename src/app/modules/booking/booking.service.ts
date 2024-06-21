@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { TBooking } from './booking.interface';
+import { TBooking, TReturnBooking } from './booking.interface';
 import { Booking } from './booking.model';
 import AppError from '../../errors/AppError';
 import { Car } from '../car/car_create_model';

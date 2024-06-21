@@ -1,9 +1,8 @@
-import { TUser } from './user.interface';
-// import config from '../../config';
-import { User } from './user.model';
-import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import config from '../../config';
+import { TUser } from './user.interface';
+import { User } from './user.model';
+import AppError from '../../errors/AppError';
 
 const createUserIntoDB = async (payload: TUser) => {
   const userData: Partial<TUser> = {};

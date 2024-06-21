@@ -1,7 +1,7 @@
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
-import catchAsync from '../../utils/catchAsync';
-import httpStatus from 'http-status';
 
 const createSingleUser = catchAsync(async (req, res) => {
   //console.log(req.body);

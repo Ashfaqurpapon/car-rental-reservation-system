@@ -3,7 +3,7 @@ import { createBookingValidationSchema } from './booking.validation';
 import validateRequest from '../../middlewares/validateRequest';
 import { BookingControllers } from './booking.controller';
 import auth from '../../middlewares/auth';
-import { USER_ROLE } from '../user/user.constant';
+import { USER_ROLE } from '../userNew/user.constant';
 
 const router = express.Router();
 router.get('/bookings', BookingControllers.getBookingsByCarAndDate);

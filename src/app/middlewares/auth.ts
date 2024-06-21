@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
-import { TUserRole } from '../modules/user/user.interface';
-import catchAsync from '../utils/catchAsync';
-import { Request, Response, NextFunction } from 'express';
 import AppError from '../errors/AppError';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { TUserRole } from '../modules/userNew/user.interface';
+import catchAsync from '../utils/catchAsync';
+import { NextFunction, Request, Response } from 'express';
 import config from '../config';
 
 const auth = (...requiredRoles: TUserRole[]) => {

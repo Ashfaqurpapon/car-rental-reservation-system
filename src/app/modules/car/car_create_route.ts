@@ -6,10 +6,7 @@ import {
   updateCarValidationSchema,
 } from './car_create_validation';
 import auth from '../../middlewares/auth';
-import { USER_ROLE } from '../user/user.constant';
-
-// import validateRequest from '../../middleware/validateRequest';
-// import { createCarValidationSchema } from './car_create_validation';
+import { USER_ROLE } from '../userNew/user.constant';
 
 const router = express.Router();
 router.post(
@@ -18,8 +15,9 @@ router.post(
   validateRequest(createCarValidationSchema),
   carCreateController.createCar,
 );
-router.get('/', carCreateController.getAllACreatedCar);
+
 router.get('/:id', carCreateController.getSingleCreatedCar);
+router.get('/', carCreateController.getAllACreatedCar);
 router.delete(
   '/:id',
   auth(USER_ROLE.admin),
