@@ -21,7 +21,7 @@ const getAllACreatedCar = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: ' Created Car are retrieved successfully',
+    message: ' Cars retrieved successfully',
     data: result,
   });
 });
