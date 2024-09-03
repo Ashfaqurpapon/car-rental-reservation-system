@@ -1,19 +1,16 @@
 import httpStatus from 'http-status';
-import { TBooking, TReturnBooking } from './booking.interface';
+import { TBooking } from './booking.interface';
 import { Booking } from './booking.model';
 import AppError from '../../errors/AppError';
 import { Car } from '../car/car_create_model';
 import mongoose from 'mongoose';
 
-const getBookingsByCarAndDate = async (carId: any, date: any) => {
+const getBookingsByCarAndDate = async (query: Record<string, unknown>) => {
   //console.log('paps');
 
   try {
     //const objectIdCarId = mongoose.Types.ObjectId(carId);
-    const bookings = await Booking.find({
-      carId: carId,
-      date: new Date(date),
-    })
+    const bookings = await Booking.find(query)
       .populate('user')
       .populate('carId');
     if (!bookings) {
@@ -69,7 +66,7 @@ const getUserBookings = async (userId: string) => {
   //console.log('Limon');
   //console.log(userId);
   try {
-    const result = await Booking.findOne({
+    const result = await Booking.find({
       user: userId,
     })
       .populate('user')

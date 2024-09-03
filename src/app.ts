@@ -9,7 +9,12 @@ import AppError from './app/errors/AppError';
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+// app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(
+  cors({
+    origin: 'https://car-rental-reseration-system-iepw.vercel.app/',
+  }),
+);
 
 app.use('/api', router);
 app.use('/', (req, res) => {

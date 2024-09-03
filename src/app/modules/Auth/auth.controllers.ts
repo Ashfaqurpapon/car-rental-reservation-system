@@ -9,12 +9,12 @@ const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
   //console.log(result);
 
-  const { refreshToken, accessToken, user } = result;
+  const { accessToken, user } = result;
 
-  res.cookie('refreshToken', refreshToken, {
-    secure: config.NODE_ENV === 'production',
-    httpOnly: true,
-  });
+  // res.cookie('refreshToken', refreshToken, {
+  //   secure: config.NODE_ENV === 'production',
+  //   httpOnly: true,
+  // });
 
   sendResponseWithToken(res, {
     statusCode: httpStatus.OK,
