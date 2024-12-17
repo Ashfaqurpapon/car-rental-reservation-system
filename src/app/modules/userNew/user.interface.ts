@@ -1,4 +1,4 @@
-import { Document, Model, ObjectId } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { USER_ROLE } from './user.constant';
 
 export interface TUser extends Document {
@@ -8,10 +8,12 @@ export interface TUser extends Document {
   _id?: string;
   name: string;
   email: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'vendor';
   password: string;
   phone: string;
   address: string;
+  imageUrlID: string;
+  isPremium: boolean;
   isDeleted: boolean;
 }
 

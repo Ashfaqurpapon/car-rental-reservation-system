@@ -5,7 +5,6 @@ import { BookingServices } from './booking.service';
 const getBookingsByCarAndDate = catchAsync(async (req, res) => {
   const { carId, date } = req.query;
   //console.log(req.query);
-
   const bookings = await BookingServices.getBookingsByCarAndDate(req.query);
 
   sendResponse(res, {

@@ -24,7 +24,7 @@ router.delete(
   carCreateController.deleteSingleCreatedCar,
 );
 
-router.put('/return', auth(USER_ROLE.user), carCreateController.returnCar);
+router.put('/return', auth(USER_ROLE.admin), carCreateController.returnCar);
 
 router.put(
   '/:id',

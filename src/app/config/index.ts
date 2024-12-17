@@ -13,4 +13,14 @@ export default {
   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
   jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
   jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
+
+  PAYMENT_URL: process.env.PAYMENT_URL,
+  STORE_ID: process.env.STORE_ID,
+  SIGNETURE_KEY: process.env.SIGNETURE_KEY,
+  PAYMENT_VERIFY_URL: process.env.PAYMENT_VERIFY_URL,
+
+  BASE_API: process.env.BASE_API,
+  Frontent_API: process.env.Frontent_API,
+  Frontent_API_Home: process.env.Frontent_API_Home,
 };
+////

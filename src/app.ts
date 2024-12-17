@@ -5,21 +5,21 @@ import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import httpStatus from 'http-status';
 import AppError from './app/errors/AppError';
+import config from './app/config';
 // import { StudentRoutes } from './app/modules/student/student.route';
 const app: Application = express();
 
 app.use(express.json());
-// app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
-app.use(
-  cors({
-    origin: 'https://car-rental-reseration-system-iepw.vercel.app/',
-  }),
-);
+app.use(cors({ origin: '*' }));
+
+//for productions
+//app.use(cors({ origin: 'https://eshop-dun-five.vercel.app/' }));
+//app.use(cors({ origin: config.Frontent_API }));
 
 app.use('/api', router);
 app.use('/', (req, res) => {
   if (req.path === '/') {
-    res.status(httpStatus.OK).send('Welcome to car rental service');
+    res.status(httpStatus.OK).send('Welcome to  Application');
   } else {
     throw new AppError(httpStatus.NOT_FOUND, 'This routes is not found');
   }

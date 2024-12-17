@@ -17,7 +17,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'admin', 'vendor'],
       required: true,
     },
     password: {
@@ -32,6 +32,14 @@ const userSchema = new Schema<TUser, UserModel>(
     address: {
       type: String,
       required: true,
+    },
+    imageUrlID: {
+      type: String,
+      default: '',
+    },
+    isPremium: {
+      type: Boolean,
+      default: false,
     },
     isDeleted: {
       type: Boolean,

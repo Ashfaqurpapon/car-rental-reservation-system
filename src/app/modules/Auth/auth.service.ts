@@ -4,10 +4,11 @@ import { User } from '../userNew/user.model';
 import { TLoginUser } from './auth.model';
 import { createToken } from './auth.utils';
 import config from '../../config';
+import { TUser } from '../userNew/user.interface';
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
-  const user = await User.isUserExistsByEmail(payload.email);
+  const user: TUser = await User.isUserExistsByEmail(payload.email);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
@@ -26,7 +27,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   //create token and sent to the  client
 
-  const tempId: string = user._id.toString();
+  const tempId: string = user._id!.toString();
 
   const jwtPayload = {
     userId: tempId,

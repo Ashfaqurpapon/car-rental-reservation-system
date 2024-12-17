@@ -7,7 +7,6 @@ import mongoose from 'mongoose';
 
 const getBookingsByCarAndDate = async (query: Record<string, unknown>) => {
   //console.log('paps');
-
   try {
     //const objectIdCarId = mongoose.Types.ObjectId(carId);
     const bookings = await Booking.find(query)

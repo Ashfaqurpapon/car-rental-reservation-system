@@ -13,6 +13,8 @@ const createUserIntoDB = async (payload: TUser) => {
   //set student role
   if (payload.role == 'admin') {
     userData.role = 'admin';
+  } else if (payload.role == 'vendor') {
+    userData.role = 'vendor';
   } else {
     userData.role = 'user';
   }
@@ -31,6 +33,25 @@ const createUserIntoDB = async (payload: TUser) => {
   }
 };
 
+const getSingleUserUserId = async (id: string) => {
+  const result = User.findById(id);
+  return result;
+};
+
+const updateUserInfoInDB = async (id: string, payload: Partial<TUser>) => {
+  const result = await User.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
+// Admin can do this
+// const deleteUserAcccount = async () => {};
+// const suspentUserAccount = async () => {};
+
 export const UserServices = {
   createUserIntoDB,
+  getSingleUserUserId,
+  updateUserInfoInDB,
 };
